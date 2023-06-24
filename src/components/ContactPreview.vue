@@ -13,6 +13,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.contact-preview {
+    h2 {
+        font-size: 1.5em;
+        color: #333;
+    }
 
+    h3 {
+        font-size: 1.2em;
+        color: #777;
+    }
+}
 </style>

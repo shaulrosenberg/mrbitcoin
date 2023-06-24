@@ -8,9 +8,10 @@
 
 <script>
 import { contactService } from '../services/contact.service'
+import { eventBus } from '../services/eventBus.service'
 import ContactList from '../components/ContactList.vue'
 import ContactFilter from '../components/ContactFilter.vue'
-import { computed } from 'vue'
+
 export default {
     name: "ContactIndex",
     data() {
@@ -32,8 +33,15 @@ export default {
             this.contacts.push(newContact)
         },
         async removeContact(contactId) {
+            const msg = {
+                txt: `Contact ${contactId} removed...`,
+                type: 'success',
+                // timeout: 2500,
+            }
             await contactService.deleteContact(contactId)
             this.contacts = this.contacts.filter(contact => contact._id !== contactId)
+
+            eventBus.emit('user-msg', msg)
         },
         onSetFilterBy(filterBy) {
             this.filterBy = filterBy
@@ -48,4 +56,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.contact-index {
+    padding: 10px;
+    h3 {
+        font-size: 2em;
+        color: #333;
+    }
+}
+</style>

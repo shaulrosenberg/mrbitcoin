@@ -34,4 +34,37 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+
+<style lang="scss" scoped>
+section {
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            border-bottom: 1px solid #ddd;
+            padding: 1em 0;
+
+            .actions {
+                display: flex;
+                gap: 1em;
+
+                button {
+                    padding: 0.5em 1em;
+                    font-size: 1em;
+                    border: none;
+                    border-radius: 4px;
+                    background: #3366ff;
+                    color: white;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #0056b3;
+                    }
+                }
+            }
+        }
+    }
+}
+</style>

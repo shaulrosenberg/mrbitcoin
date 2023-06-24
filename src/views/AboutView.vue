@@ -17,7 +17,7 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	min-height: calc(100vh - 10rem); // considering header and footer heights
+	min-height: calc(100vh - 76px); // considering header and footer heights
 	text-align: center;
 	background-color: #f5f5f5;
 
