@@ -1,7 +1,9 @@
 <template>
     <section class="contact-index">
-        <h3>Contacts</h3>
-        <ContactFilter @filter="onSetFilterBy" />
+        <div class="header-section">
+            <ContactFilter @filter="onSetFilterBy" />
+            <RouterLink to="/contact/edit" class="add-contact-btn">Add Contact</RouterLink>
+        </div>
         <ContactList @remove="removeContact" v-if="contacts" :contacts="filteredContacts" />
     </section>
 </template>
@@ -16,12 +18,11 @@ export default {
     name: "ContactIndex",
     data() {
         return {
-            contacts: null,
             filterBy: {}
         }
     },
     async created() {
-        this.contacts = await contactService.getContacts()
+        this.$store.dispatch({ type: 'loadContacts' })
     },
     components: {
         ContactList,
@@ -38,9 +39,8 @@ export default {
                 type: 'success',
                 // timeout: 2500,
             }
-            await contactService.deleteContact(contactId)
-            this.contacts = this.contacts.filter(contact => contact._id !== contactId)
-
+            
+            this.$store.dispatch({type: 'removeContact', contactId})
             eventBus.emit('user-msg', msg)
         },
         onSetFilterBy(filterBy) {
@@ -50,7 +50,11 @@ export default {
     computed: {
         filteredContacts() {
             const regex = new RegExp(this.filterBy.txt, 'i')
-            return this.contacts.filter(contact => regex.test(contact.name) || regex.test(contact.email))
+            let filteredContacts = this.contacts.filter(contact => regex.test(contact.name) || regex.test(contact.email))
+            return filteredContacts
+        },
+        contacts() {
+            return this.$store.getters.contacts
         }
     }
 }
@@ -58,10 +62,29 @@ export default {
 
 <style lang="scss" scoped>
 .contact-index {
-    padding: 10px;
-    h3 {
-        font-size: 2em;
-        color: #333;
+    padding: 20px;
+    margin-bottom: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .add-contact-btn {
+        padding: 10px 20px;
+        background-color: #3366ff;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+
+        &:hover {
+            background-color: #0056b3;
+        }
     }
 }
 </style>

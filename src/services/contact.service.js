@@ -1,3 +1,5 @@
+import { utilService } from "./util.service"
+
 export const contactService = {
     getContacts,
     getContactById,
@@ -6,7 +8,7 @@ export const contactService = {
     getEmptyContact
 }
 
-
+const STORAGE_KEY = 'contacts'
 
 const contacts = [
     {
@@ -141,7 +143,11 @@ function sort(arr) {
 
 function getContacts(filterBy = null) {
     return new Promise((resolve, reject) => {
-        var contactsToReturn = contacts;
+        let contactsFromStorage = utilService.loadFromStorage(STORAGE_KEY) ||
+            contacts && utilService.saveToStorage(STORAGE_KEY, contacts)
+
+        let contactsToReturn = contactsFromStorage
+
         if (filterBy && filterBy.term) {
             contactsToReturn = filter(filterBy.term)
         }
@@ -151,6 +157,7 @@ function getContacts(filterBy = null) {
 
 function getContactById(id) {
     return new Promise((resolve, reject) => {
+        const contacts = utilService.loadFromStorage(STORAGE_KEY)
         const contact = contacts.find(contact => contact._id === id)
         contact ? resolve(contact) : reject(`Contact id ${id} not found!`)
     })
@@ -158,9 +165,11 @@ function getContactById(id) {
 
 function deleteContact(id) {
     return new Promise((resolve, reject) => {
+        const contacts = utilService.loadFromStorage(STORAGE_KEY)
         const index = contacts.findIndex(contact => contact._id === id)
         if (index !== -1) {
             contacts.splice(index, 1)
+            utilService.saveToStorage(STORAGE_KEY, contacts)
         }
 
         resolve(contacts)
@@ -169,9 +178,11 @@ function deleteContact(id) {
 
 function _updateContact(contact) {
     return new Promise((resolve, reject) => {
+        const contacts = utilService.loadFromStorage(STORAGE_KEY)
         const index = contacts.findIndex(c => contact._id === c._id)
         if (index !== -1) {
             contacts[index] = contact
+            utilService.saveToStorage(STORAGE_KEY, contacts)
         }
         resolve(contact)
     })
@@ -180,7 +191,9 @@ function _updateContact(contact) {
 function _addContact(contact) {
     return new Promise((resolve, reject) => {
         contact._id = _makeId()
+        const contacts = utilService.loadFromStorage(STORAGE_KEY)
         contacts.push(contact)
+        utilService.saveToStorage(STORAGE_KEY, contacts)
         resolve(contact)
     })
 }

@@ -43,12 +43,17 @@ section {
         margin: 0;
 
         li {
-            border-bottom: 1px solid #ddd;
-            padding: 1em 0;
+            padding: 20px;
+            margin: 10px 0;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
 
             .actions {
                 display: flex;
                 gap: 1em;
+                align-items: center;
+                margin-top: 10px;
 
                 button {
                     padding: 0.5em 1em;
@@ -61,6 +66,14 @@ section {
 
                     &:hover {
                         background: #0056b3;
+                    }
+
+                    &:last-child {
+                        background: #7d7274;
+
+                        &:hover {
+                            background: #d4c8ca;
+                        }
                     }
                 }
             }

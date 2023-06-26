@@ -4,6 +4,7 @@ import ContactIndex from '../views/ContactIndex.vue'
 import ContactDetails from '../views/ContactDetails.vue'
 import ContactEdit from '../views/ContactEdit.vue'
 import StatsView from '../views/StatsView.vue'
+import LoginSignup from '../views/LoginSignup.vue'
 
 const router = createRouter({
 	// add hash
@@ -41,6 +42,11 @@ const router = createRouter({
 			path: '/stats',
 			name: 'statistics',
 			component: StatsView
+		},
+		{
+			path: '/signup',
+			name: 'signup',
+			component: LoginSignup
 		}
 	]
 })

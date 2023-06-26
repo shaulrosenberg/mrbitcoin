@@ -1,8 +1,11 @@
 <template>
     <div class="home">
         <section class="hero-section">
-            <h1>Welcome to Mr Bitcoin!</h1>
+            <h1 v-if="!user">Hello guest</h1>
+            <h1 v-else>Welcome to Mr Bitcoin! {{ user.name }}</h1>
             <p>Your reliable source for real-time Bitcoin data.</p>
+            <TransactionList v-if="user" :transactions="transactions" />
+            <RouterLink v-if="!user" to="/signup">Login</RouterLink>
         </section>
         <section class="features-section">
             <div class="feature">
@@ -18,22 +21,55 @@
                 <p>Manage your contacts easily and efficiently with our built-in contact management system.</p>
             </div>
         </section>
+        <section class="home-charts">
+            <div class="chart-container">
+                <Chart />
+            </div>
+            <div class="chart-container">
+                <LineChart />
+            </div>
+        </section>
     </div>
 </template>
-
+  
 <script>
+import TransactionList from "@/components/TransactionList.vue"
+import Chart from "../components/Chart.vue"
+import LineChart from "@/components/LineChart.vue"
+
 export default {
-    name: 'HomeView',
+    name: "HomeView",
+    components: {
+        TransactionList,
+        Chart,
+        LineChart
+    },
+    computed: {
+        user() {
+            return this.$store.getters.user;
+        },
+        transactions() {
+            return this.user.transactions.slice(0, 3)
+        },
+    },
 }
 </script>
-
+  
 <style lang="scss" scoped>
 .home {
     text-align: center;
     padding: 2rem;
     background-color: #f5f5f5;
-	min-height: calc(100vh - 76px);
+    min-height: calc(100vh - 76px);
 
+    .home-charts {
+        display: flex;
+        justify-content: space-between;
+        .chart-container {
+            width: 40%;
+            padding: 0.5rem;
+        }
+    }
     .hero-section {
         display: flex;
         flex-direction: column;
@@ -76,3 +112,4 @@ export default {
     }
 }
 </style>
+  

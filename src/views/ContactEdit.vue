@@ -1,6 +1,7 @@
 <template>
     <form @submit.prevent="save" v-if="contact" class="contact-edit">
-        <img :src="`https://robohash.org/${contact._id}?set=set4`" alt="avatar" class="contact-avatar">
+        <!-- <img :src="`https://robohash.org/${contact._id}?set=set4`" alt="avatar" class="contact-avatar"> -->
+        <img :src="`https://avatars.dicebear.com/api/human/${this.contact.email}.svg`" alt="avatar" class="contact-avatar">
         <div class="input-group">
             <label for="name">Name</label>
             <input id="name" v-model="contact.name" type="text">
